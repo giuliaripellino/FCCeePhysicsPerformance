@@ -1,0 +1,81 @@
+#************************************************************
+#*                     MadGraph5_aMC@NLO                    *
+#*                                                          *
+#*                *                       *                 *
+#*                  *        * *        *                   *
+#*                    * * * * 5 * * * *                     *
+#*                  *        * *        *                   *
+#*                *                       *                 *
+#*                                                          *
+#*                                                          *
+#*         VERSION 3.4.1                 2022-09-01         *
+#*                                                          *
+#*    The MadGraph5_aMC@NLO Development Team - Find us at   *
+#*    https://server06.fynu.ucl.ac.be/projects/madgraph     *
+#*                                                          *
+#************************************************************
+#*                                                          *
+#*               Command File for MadGraph5_aMC@NLO         *
+#*                                                          *
+#*     run as ./bin/mg5_aMC  filename                       *
+#*                                                          *
+#************************************************************
+set group_subprocesses Auto
+set ignore_six_quark_processes False
+set low_mem_multicore_nlo_generation False
+set complex_mass_scheme False
+set include_lepton_initiated_processes False
+set gauge unitary
+set loop_optimized_output True
+set loop_color_flows False
+set max_npoint_for_channel 0
+set default_unset_couplings 99
+set max_t_for_channel 99
+set zerowidth_tchannel True
+set nlo_mixed_expansion True
+import model sm
+define p = g u c d s u~ c~ d~ s~
+define j = g u c d s u~ c~ d~ s~
+define l+ = e+ mu+
+define l- = e- mu-
+define vl = ve vm vt
+define vl~ = ve~ vm~ vt~
+define f = u c d s u~ c~ d~ s~ e- mu- e+ mu+
+set auto_convert_model T
+import model --modelname HAHM_variableMW_UFO
+
+#*** generate the process: e+ e- -> Z -> Z h with Z -> e+ e-/mu+ mu- and h -> 2hs -> 4b
+generate e+ e- > z > z h, z > l+ l-, (h > hs hs > b b~ b b~)
+
+# name of output according to "scalar_final state of Z_final state of HS_mass of scalar in GeV"
+output HS_zll_HSbbbb_mHS20GeV
+
+# launch the event generation
+launch HS_zll_HSbbbb_mHS20GeV
+done
+
+#*** set electron beams and the center-of-mass energy to the ZH maximum production peak (240 GeV), i.e 120 GeV per electron beam
+
+# set beam type; 0 for electron, 1 for proton
+set lpp1 0
+set lpp2 0
+# set total energy in GeV for each beam 
+set ebeam1 120	
+set ebeam2 120
+
+#*** set model parameters; couplings and masses
+
+# the model accounts both dark scalars and dark photons, hence set the kinetic mixing coupling epsilon to zero and mass of dark photon high (to only simulate SM + dark scalar singlet)
+set epsilon 1.000000e-09
+set mZDinput 1.000000e+03
+
+# set the mass of the dark scalar
+set MHSinput 20.000000e+00
+
+# set singlet-higgs coupling
+set kap 1.000000e-02
+
+# set number of events
+set nevents 10000
+
+done
